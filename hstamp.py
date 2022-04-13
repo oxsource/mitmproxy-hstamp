@@ -16,14 +16,11 @@ def strftime(value):
         return None
 
 def humanstamp(value, key = None):
-    if(value is None):
+    if value is None:
         return None
-    if (isinstance(value, list)):
-        bufs = []
-        for el in value:
-            bufs.append(humanstamp(el, None))
-        return bufs
-    elif(isinstance(value, dict)):
+    if isinstance(value, list):
+        return list(map(humanstamp, value))
+    elif isinstance(value, dict):
         objs = {}
         for (ek, ev) in value.items():
             values = humanstamp(ev, ek)
@@ -36,7 +33,7 @@ def humanstamp(value, key = None):
             if(len(ext) > 0):
                 objs[key_ts] = ext
         return objs
-    elif(key is not None):
+    elif key is not None:
         ext = strftime(value)
         return {('%s_ts' % key): '' if(ext is None) else ext}
     else:
